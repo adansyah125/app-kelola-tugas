@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { supabase } from "./lib/supabase";
 import { toast } from "react-toastify";
+import { Eye, Download, Link as LinkIcon, Trash2 } from "lucide-react";
 
 export default function List() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [preview, setPreview] = useState(null);
   const [user, setUser] = useState(null);
-
-
 
   const fetchData = async () => {
       const { data, error } = await supabase
@@ -37,16 +36,13 @@ export default function List() {
   if (loading) {
     return <p className="text-center mt-6 text-gray-500">Loading...</p>;
   }
-
-
-  
 const handleDelete = async (item) => {
   const confirmDelete = confirm("Yakin mau hapus?");
   if (!confirmDelete) return;
 
-  const toastId = toast.loading("Menghapus...");
 
   try {
+    // hapus file
     if (item.file_url) {
       const fileName = item.file_url.split("/").pop();
 
@@ -55,30 +51,31 @@ const handleDelete = async (item) => {
         .remove([fileName]);
     }
 
-    const { error } = await supabase
+    // 🔥 delete + return data
+    const { data, error } = await supabase
       .from("tugas")
       .delete()
-      .eq("id", item.id);
+      .eq("id", item.id)
+      .select();
+
+    console.log("DELETED:", data);
 
     if (error) throw error;
 
-    // 🔥 REFRESH DATA (SOLUSI UTAMA)
-    await fetchData();
+    // ❗ kalau tidak ada yang kehapus
+    if (!data || data.length === 0) {
+      toast.error("Tidak ada data yang dihapus");
+      return;
+    }
 
-    toast.update(toastId, {
-      render: "✅ Berhasil dihapus",
-      type: "success",
-      isLoading: false,
-      autoClose: 2000,
-    });
+    // update UI
+    setTasks((prev) => prev.filter((t) => t.id !== item.id));
 
-  } catch (err) {
-    toast.update(toastId, {
-      render: "❌ Gagal hapus",
-      type: "error",
-      isLoading: false,
-      autoClose: 3000,
-    });
+    toast.success("Berhasil hapus");
+
+  } catch (error) {
+    console.error(error);
+   toast.error("Gagal hapus");
   }
 };
   return (
@@ -128,62 +125,69 @@ const handleDelete = async (item) => {
 
         {/* FILE */}
         {item.file_url && (
-          <>
+            <>
             {item.file_url.endsWith(".pdf") && (
-              <button
+                <button
                 onClick={() => setPreview(item.file_url)}
                 className="w-full flex items-center justify-center gap-2 text-sm bg-gray-100 hover:bg-gray-200 py-2 rounded-lg transition"
-              >
-                👁️ Preview
-              </button>
+                >
+                <Eye size={16} />
+                Preview
+                </button>
             )}
 
             <a
-              href={item.file_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full flex items-center justify-center gap-2 text-sm bg-gray-900 text-white py-2 rounded-lg hover:bg-gray-800 transition"
+                href={item.file_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center justify-center gap-2 text-sm bg-gray-900 text-white py-2 rounded-lg hover:bg-gray-800 transition"
             >
-              📥 Download
+                <Download size={16} />
+                Download
             </a>
-          </>
+            </>
         )}
 
         {/* LINK */}
         {item.link_url && (
-          <a
+            <a
             href={item.link_url}
             target="_blank"
             rel="noopener noreferrer"
             className="w-full flex items-center justify-center gap-2 text-sm bg-green-100 text-green-700 py-2 rounded-lg hover:bg-green-200 transition"
-          >
-            🔗 Buka Link
-          </a>
+            >
+            <LinkIcon size={16} />
+            Buka Link
+            </a>
         )}
-      </div>
-      {user && user.id === item.user_id && (
-  <button
-    onClick={() => handleDelete(item)}
-    className="w-full mt-3 text-sm bg-red-100 text-red-600 py-2 rounded-lg hover:bg-red-200 transition"
-  >
-    🗑️ Hapus
-  </button>
-)}
+    </div>
+
+        {/* DELETE */}
+        {user && user.id === item.user_id && (
+        <button
+            onClick={() => handleDelete(item)}
+            className="w-full mt-3 flex items-center justify-center gap-2 text-sm bg-red-100 text-red-600 py-2 rounded-lg hover:bg-red-200 transition"
+        >
+            <Trash2 size={16} />
+            Hapus
+        </button>
+        )}
+      
 
       {/* FOOTER */}
       <div className="mt-4 text-xs text-gray-400">
         Diupload Pada  {new Date(item.created_at).toLocaleString('id-ID', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-    hour12: false
-  }).replace(/\./g, ':')}
-</div>
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+    }).replace(/\./g, ':')}
     </div>
-  ))}
-</div>
+        </div>
+    ))}
+    </div>
 
       {/* MODAL PREVIEW */}
       {preview && (

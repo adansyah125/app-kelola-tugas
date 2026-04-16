@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { supabase } from "./lib/supabase";
+import { toast } from "react-toastify";
 
 export default function Upload() {
   const [file, setFile] = useState(null);
@@ -75,7 +76,7 @@ export default function Upload() {
         return;
       }
 
-      alert("Berhasil upload!");
+      toast.success("Berhasil upload!");
 
       setNama("");
       setMatkul("");
@@ -83,6 +84,7 @@ export default function Upload() {
       setFile(null);
       setLink("");
     } catch (err) {
+        console.error(err);
       alert("Terjadi error!");
     }
 

@@ -107,52 +107,60 @@ export default function App() {
       </header>
         {/* Hero */}
       <section className="bg-gray-50 py-20 px-6">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
 
-          {/* 🔤 KIRI - TEXT */}
-          <div className="text-center md:text-left max-w-xl">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4 leading-tight text-gray-800">
-              Upload & Kelola Tugas Dengan Mudah
-            </h2>
+        {/* 🔤 KIRI - TEXT */}
+        <div className="text-center md:text-left max-w-xl 
+          opacity-0 translate-y-10 animate-fadeUp">
+          
+          <h2 className="text-3xl md:text-5xl font-bold mb-4 leading-tight text-gray-800">
+            Upload & Kelola Tugas Dengan Mudah
+          </h2>
 
-            <p className="text-lg md:text-xl mb-6 text-gray-500 italic">
-  "Kamu butuh banyak error dan backpropagation untuk sampai pada hasil yang akurat."
-</p>
-
-          </div>
-
-          {/* 👤 KANAN - PROFILE */}
-          <div className="relative">
-            <div className="w-64 h-64 bg-white rounded-3xl border border-gray-200 flex flex-col items-center justify-center shadow-lg">
-              
-              <img
-                src="syahdan-pp.jpg"
-                alt="profile"
-                className="w-24 h-24 rounded-full border-4 border-gray-200 mb-4"
-              />
-
-              <h3 className="font-semibold text-lg text-gray-800">
-                Syahdan Mutahariq
-              </h3>
-
-              <p className="text-sm text-gray-500">
-                23110065
-              </p>
-              <p className="text-sm text-gray-500">
-                Mahasiswa
-              </p>
-            </div>
-
-            {/* badge status */}
-            <div className="absolute -bottom-4 -left-4 bg-white border border-gray-200 px-4 py-2 rounded-xl text-sm shadow">
-              <span className="text-green-600 font-semibold">
-                ● Aktif Kuliah
-              </span>
-            </div>
-          </div>
+          <p className="text-lg md:text-xl mb-6 text-gray-500 italic">
+            "Kamu butuh banyak error dan backpropagation untuk sampai pada hasil yang akurat."
+          </p>
 
         </div>
-      </section>
+
+        {/* 👤 KANAN - PROFILE */}
+        <div className="relative opacity-0 translate-y-10 animate-fadeUp delay-200">
+          
+          <div className="w-64 h-64 bg-white rounded-3xl border border-gray-200 
+            flex flex-col items-center justify-center shadow-lg
+            transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+            
+            <img
+              src="syahdan-pp.jpg"
+              alt="profile"
+              className="w-24 h-24 rounded-full border-4 border-gray-200 mb-4 
+              transition-transform duration-300 hover:scale-110"
+            />
+
+            <h3 className="font-semibold text-lg text-gray-800">
+              Syahdan Mutahariq
+            </h3>
+
+            <p className="text-sm text-gray-500">
+              23110065
+            </p>
+            <p className="text-sm text-gray-500">
+              Mahasiswa
+            </p>
+          </div>
+
+          {/* badge status */}
+          <div className="absolute -bottom-4 -left-4 bg-white border border-gray-200 px-4 py-2 rounded-xl text-sm shadow
+            transition-all duration-300 hover:scale-105">
+            
+            <span className="text-green-600 font-semibold animate-pulse">
+              ● Aktif Kuliah
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </section>
 
       {/* 📤 UPLOAD SECTION */}
       <section className="max-w-5xl mx-auto px-4 py-10">
