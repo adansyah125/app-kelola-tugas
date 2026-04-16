@@ -111,7 +111,7 @@ export default function App() {
 
           {/* 🔤 KIRI - TEXT */}
           <div className="text-center md:text-left max-w-xl">
-            <h2 className="text-3xl md:text-5xl font-bold mb-4 leading-tight text-gray-800" data-aos="fade-right" data-aos-duration="1000">
+            <h2 className="text-3xl md:text-5xl font-bold mb-4 leading-tight text-gray-800">
               Upload & Kelola Tugas Dengan Mudah
             </h2>
 
