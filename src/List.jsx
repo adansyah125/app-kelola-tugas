@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { supabase } from "./lib/supabase";
 import { toast } from "react-toastify";
 import { Eye, Download, Link as LinkIcon, Trash2 } from "lucide-react";
+import { Search } from "lucide-react";
 
 export default function List() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [preview, setPreview] = useState(null);
   const [user, setUser] = useState(null);
+  const [search, setSearch] = useState("");
 
   const fetchData = async () => {
       const { data, error } = await supabase
@@ -78,8 +80,36 @@ const handleDelete = async (item) => {
    toast.error("Gagal hapus");
   }
 };
+
+const handleDownload = async (url) => {
+  const res = await fetch(url);
+  const blob = await res.blob();
+
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = url.split("/").pop();
+  link.click();
+};
+
+const filteredTasks = tasks.filter((item) =>
+  item.nama?.toLowerCase().includes(search.toLowerCase()) ||
+  item.matkul?.toLowerCase().includes(search.toLowerCase()) ||
+  item.pertemuan?.toLowerCase().includes(search.toLowerCase())
+);
   return (
     <div className="max-w-6xl mx-auto mt-10 px-4">
+        <div className="relative max-w-md">
+  <Search className="absolute left-3 top-3 text-gray-400" size={18} />
+
+  <input
+    type="text"
+    placeholder="Cari tugas..."
+    value={search}
+    onChange={(e) => setSearch(e.target.value)}
+    className="w-full border border-gray-300 rounded-lg pl-10 pr-4 py-2 
+    focus:outline-none focus:ring-2 focus:ring-gray-900 transition mb-4"
+  />
+</div>
       {/* <h2 className="text-2xl font-semibold mb-6 text-gray-800">
         Daftar Tugas
       </h2> */}
@@ -92,7 +122,7 @@ const handleDelete = async (item) => {
 
       {/* CARD GRID */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-  {tasks.map((item) => (
+  {filteredTasks.map((item) => (
     <div
       key={item.id}
       className="group bg-white rounded-2xl border border-gray-200 p-5 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
@@ -136,15 +166,13 @@ const handleDelete = async (item) => {
                 </button>
             )}
 
-            <a
-                href={item.file_url}
-                target="_blank"
-                rel="noopener noreferrer"
+            <button
+                onClick={() => handleDownload(item.file_url)}
                 className="w-full flex items-center justify-center gap-2 text-sm bg-gray-900 text-white py-2 rounded-lg hover:bg-gray-800 transition"
-            >
+                >
                 <Download size={16} />
                 Download
-            </a>
+            </button>
             </>
         )}
 
