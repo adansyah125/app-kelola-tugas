@@ -44,7 +44,7 @@ export default function List() {
         await supabase.storage.from("tugas").remove([fileName]);
       }
 
-      const { data, error } = await supabase
+      const {  error } = await supabase
         .from("tugas")
         .delete()
         .eq("id", item.id)
