@@ -55,7 +55,7 @@ useEffect(() => {
             <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
               <span className="text-white text-xs font-bold">S</span>
             </div>
-            <h1 className="text-sm font-semibold tracking-tight uppercase">SmartTask</h1>
+            <h1 className="text-sm font-semibold tracking-tight uppercase">Aplikasi Pengumpulan Tugas</h1>
           </div>
 
           {/* DESKTOP MENU */}
@@ -75,9 +75,7 @@ useEffect(() => {
             )}
           </div>
 
-          <button onClick={() => setMenuOpen(!menuOpen)} className="md:hidden text-gray-500">
-            {menuOpen ? "✕" : "☰"}
-          </button>
+          
         </div>
       </nav>
 
@@ -105,7 +103,7 @@ useEffect(() => {
         onClick={() => scrollTo(tugasRef)} 
         className="group relative bg-black text-white px-8 py-3 rounded-full font-medium transition-all hover:pr-12"
       >
-        <span>Mulai Sekarang</span>
+        <span>Klik Disini</span>
         <span className="absolute right-4 opacity-0 group-hover:opacity-100 transition-all">→</span>
       </button>
     </div>
